@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Travel Planner</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+      <link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 700px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+        
+      var map;
+      var infowindow;
+
+      function initMap() {
+        var pyrmont = {lat: -33.867, lng: 151.195};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: pyrmont,
+          zoom: 15
+        });
+
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+          location: pyrmont,
+          radius: 500,
+          type: ['store']
+        }, callback);
+      }
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+    </script>
+  </head>
+  <body class="w3-light-grey">
+      
+<!-- Navigation Bar -->
+<div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+  <a href="#" class="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i class="fa fa-map-marker w3-margin-right"></i>Travel Planner</b></a>
+</div>
+      
+      <!-- Header -->
+<header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
+  <img class="w3-image" src="images/london2.jpg" alt="London" width="1500" height="700">
+  <div class="w3-display-middle" style="width:65%">
+    <div class="w3-bar w3-black w3-half nofloat">
+      <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Attraction');"><i class="fa fa-location-arrow w3-margin-right"></i>Attractions</button>
+      <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Resturant');"><i class="fa fa-cutlery w3-margin-right"></i>Restaurants</button>
+      <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Hotel');"><i class="fa fa-bed w3-margin-right"></i>Hotels</button>
+    </div>
+
+    <!-- Tabs -->
+    <div id="Attraction" class="w3-container w3-white w3-half myLink"> 
+            <h3>Find Attractions Nearby</h3>
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label>Location</label>
+            <input class="w3-input w3-border" list="location">
+            <datalist id="location">
+                <option value="Your Location"></option>
+                <option value="Enter Location"></option>
+            </datalist>
+        </div>
+        <div class="w3-half">
+          <label>Radius</label>
+          <input class="w3-input w3-border" type="number" min="10" max="50"> miles
+        </div>
+      </div>
+      <p><button class="w3-button w3-dark-grey">Search</button></p>
+    </div>
+
+    <div id="Resturant" class="w3-container w3-white w3-half myLink">
+      <h3>Find the best Restaurants</h3>
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label>Location</label>
+            <input class="w3-input w3-border" list="location">
+            <datalist id="restaurant">
+                <option value="Your Location"></option>
+                <option value="Enter Location"></option>
+            </datalist>
+        </div>
+        <div class="w3-half">
+          <label>Radius</label>
+          <input class="w3-input w3-border" type="number" min="10" max="50"> miles
+        </div>
+      </div>
+      <p><button class="w3-button w3-dark-grey">Search</button></p>
+    </div>
+      <div id="Hotel" class="w3-container w3-white w3-half myLink">
+      <h3>Find the best Hotel</h3>
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label>Location</label>
+            <input class="w3-input w3-border" list="location">
+            <datalist id="hotels">
+                <option value="Your Location"></option>
+                <option value="Enter Location"></option>
+            </datalist>
+        </div>
+        <div class="w3-half">
+          <label>Radius</label>
+          <input class="w3-input w3-border" type="number" min="10" max="50"> miles
+        </div>
+      </div>
+      <p><button class="w3-button w3-dark-grey">Search</button></p>
+    </div>
+  </div>
+</header>
+      <!-- Page content -->
+<div class="w3-content" style="max-width:1100px;">
+
+<div class="w3-container w3-margin-top">
+    <h1>Search Results</h1>
+     <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzOGcqN1rq2PgdYgiNHFV089pXKJ-2L1o&libraries=places&callback=initMap" async defer></script>
+    </div>
+  </div>
+  
+<!-- End page content -->
+   
+      
+      <!-- Footer -->
+<footer class="w3-container w3-center w3-opacity w3-margin-bottom">
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
+      <script>
+      // Tabs
+function openLink(evt, linkName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("myLink");
+  for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  document.getElementById(linkName).style.display = "block";
+  evt.currentTarget.className += " w3-red";
+}
+// Click on the first tablink on load
+document.getElementsByClassName("tablink")[0].click();
+      </script>
+  </body>
+</html>

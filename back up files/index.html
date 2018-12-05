@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Travel Planner</title>
+      <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="w3.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAzOGcqN1rq2PgdYgiNHFV089pXKJ-2L1o"></script>
+      <!--script type="text/javascript" src="googlemap.js"></script-->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script>
+	  var map;
+          function initalize(){
+              var center = new google.maps.LatLng(43.4540827,-76.5251587);
+              map = new google.maps.Map(document.getElementById('map'), {
+                  center: center,
+                  zoom: 9
+              });
+              var request = {
+                  location: center,
+                  radius: 8047,
+                  type: ['restaurants']
+              };
+              var service = new google.maps.places.PlacesService(map);
+              service.nearbySearch(request, callback);
+          }
+          function callback(results, status){
+              if(status == google.maps.places.PlaceServicesStatus.OK){
+                  for (var i = 0; i < results.length; i++){
+                      createMarker(results[i]);
+                  }
+              }
+          }
+          function createMarker(place){
+              var placeLoc = place.geometry.location;
+              var marker = new google.maps.Marker({
+                  map: map,
+                  position: place.geometry.location 
+              });
+          }
+          google.maps.event.addDomListener(window, 'load', initalize);
+       </script>
+	  <style>
+         #map {
+         height: 700px;
+         }
+         html, body {
+         margin: 0;
+         padding: 0;
+         }
+      </style>
+   </head>
+   <body class="w3-light-grey">
+      <!-- Navigation Bar -->
+      <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+         <a href="index.html" class="w3-bar-item w3-button w3-text-red w3-hover-red"><b><i class="fa fa-map-marker w3-margin-right"></i>Travel Planner</b></a>
+      </div>
+      <!-- Header -->
+      <header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
+         <img class="w3-image" src="images/london2.jpg" alt="London" width="1500" height="550">
+         <div class="w3-display-middle" style="width:65%">
+            <div class="w3-bar w3-black w3-half nofloat">
+               <button class="w3-bar-item w3-button tablink"><i class="fa fa-location-arrow w3-margin-right"></i>Directions</button>
+            </div>
+            <div id="Attraction" class="w3-container w3-white w3-half myLink">
+               <h3>Find Attractions Nearby</h3>
+               <div class="w3-row-padding" style="margin:0 -16px;">
+                  <div class="w3-container">
+                     <h4>Location</h4>
+                     <label>From</label>
+                     <input class="w3-input w3-border" id="txtStartingPoint">
+                     <label>To</label>
+                     <input class="w3-input w3-border" id="txtDestinationPoint">
+                      <div class="">
+               <p><button class="w3-button w3-dark-grey" id="btnQuery" value="Query" onclick="directionsMap.getGeolocationData()">Search</button></p>
+               <p><button class="w3-button w3-dark-grey" id="btnClear" value="Clear" onclick="directionsMap.clearEntries()">Reset</button></p></div>
+                  </div>
+               </div>
+            </div>
+          </div>
+      </header>
+      <!-- Page content -->
+      <div class="w3-content" style="max-width:1100px;">
+         <div class="w3-container w3-margin-top">
+            <h1>Search Results</h1>
+            <div id="map"></div>
+            <div id="panel-direction"></div>
+         </div>
+      </div>
+      <!-- End page content -->
+      <!-- Footer -->
+      <footer class="w3-container w3-center w3-opacity w3-margin-bottom">
+         <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+      </footer>
+   </body>
+</html>
